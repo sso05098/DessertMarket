@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class BookStorage {
 	ArrayList<Book> bookList = new ArrayList<>();
+	final int MAX_QUANTITY = 10;
 	
 	public BookStorage() {
 		bookList.add(new Book(2401, "쉽게 배우는 자바 프로그래밍 2판", "우종정", "한빛아카데미", 20000));
@@ -32,6 +33,10 @@ public class BookStorage {
 				return book;
 		}
 		return null;
+	}
+
+	public int getMaxQuantity() {
+		return MAX_QUANTITY;
 	}
 
 }

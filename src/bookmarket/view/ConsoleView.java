@@ -87,4 +87,33 @@ public class ConsoleView {
 		return bookId;
 	}
 
+	public int selectBookId(Cart cart) {
+		Scanner input = new Scanner(System.in);
+		
+		int bookId;
+		boolean result;
+		do {
+			System.out.print("도서 ID 입력 : ");
+			bookId = input.nextInt();
+			result = cart.isValidItem(bookId);
+			if (!result)
+				System.out.print("잘못된 도서의 ID입니다.");
+		} while (!result);
+		
+		return bookId;
+	}
+
+	public int inputNumber(int min, int max) {
+		Scanner input = new Scanner(System.in);
+		int number;
+		do {
+			System.out.print(">> 수량 입력 (" + min + " ~ " + max + "): ");
+			number = input.nextInt();
+			if (number < min || number > max)
+				System.out.println("잘못된 수량입니다.");
+		} while (number < min || number > max);
+		
+		return number;
+	}
+
 }

@@ -2,10 +2,12 @@ package bookmarket.model;
 
 public class CartItem {
 	Book book;
+	int bookId;
 	int quantity;
 	
 	public CartItem(Book book) {
 		this.book = book;
+		this.bookId = book.getBookId();
 		this.quantity = 1;
 	}
 	
