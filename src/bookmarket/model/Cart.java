@@ -78,6 +78,14 @@ public class Cart {
 		
 	}
 
+	public int getTotalPrice() {
+		int totalPrice = 0;
+		for (CartItem item : itemList) {
+			totalPrice += item.getPrice();
+		}
+		return totalPrice;
+	}
+
 	
 	
 }
