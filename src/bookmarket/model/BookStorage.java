@@ -29,8 +29,11 @@ public class BookStorage {
 				int price = Integer.parseInt(br.readLine());
 				bookList.add(new Book(id, title, author, publisher, price));
 			}
+<<<<<<< HEAD
 			fr.close();
 			br.close();
+=======
+>>>>>>> refs/remotes/origin/master
 		} catch (FileNotFoundException |  NumberFormatException e) {
 			System.out.println(e.getMessage());
 		}
