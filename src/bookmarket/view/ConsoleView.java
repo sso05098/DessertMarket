@@ -176,5 +176,12 @@ public class ConsoleView {
 		System.out.println(message);
 		
 	}
+	
+	// 문자열 입력 받기
+	public String inputString(String msg) {
+		Scanner in = new Scanner(System.in);
+		System.out.print(msg);
+		return in.nextLine();
+	}
 
 }
