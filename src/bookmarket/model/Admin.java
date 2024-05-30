@@ -5,10 +5,8 @@ public class Admin extends User {
 	private String password = "1234";
 	
 	public boolean login(String id, String password) {
-		if (!this.id.equals(id)) return false;
-		if (!this.password.equals(password)) return false;
-		
-		return true;
+		if (this.id.equals(id) && this.password.equals(password)) return true;
+		return false;
 	}
 	
 }
