@@ -1,5 +1,6 @@
 package bookmarket.controller;
 
+import bookmarket.model.Admin;
 import bookmarket.model.BookStorage;
 import bookmarket.model.Cart;
 import bookmarket.model.Customer;
@@ -11,6 +12,7 @@ public class BookMarketController {
 	BookStorage mBookStorage;
 	Cart mCart;
 	Customer mCustomer;
+	Admin mAdmin;
 	
 	String[] menuList = {
 			"0. 종료",
@@ -20,13 +22,23 @@ public class BookMarketController {
 			"4. 장바구니 도서 삭제",
 			"5. 장바구니 도서 수량 변경",
 			"6. 장바구니 비우기",
-			"7. 주문"
+			"7. 주문",
+			"8. 관리자 모드"
+	};
+	
+	String[] adminMenuList = {
+			"0. 종료",
+			"1. 도서 정보 추가",
+			"2. 도서 정보 삭제",
+			"3. 도서 정보 보기",
+			"4. 도서 정보 파일 저장"
 	};
 	
 	public BookMarketController(BookStorage bookStorage, Cart cart, ConsoleView view) {
 		this.view = view;
-		this.mBookStorage = bookStorage;
-		this.mCart = cart;
+		mBookStorage = bookStorage;
+		mCart = cart;
+		mAdmin = new Admin();
 	}
 
 	public void start() {
@@ -46,10 +58,84 @@ public class BookMarketController {
 			case 5 -> updateBookInCart();
 			case 6 -> resetCart();
 			case 7 -> order();
+			case 8 -> amdinMode();
 			case 0 -> end();
 			default -> view.showMessage("잘못된 메뉴 번호입니다.");
 			}
 		} while (menu != 0);	
+	}
+
+	private void amdinMode() {
+		
+		if (!authenticateAdmin()) {
+			view.showMessage("관리자 모드로 전환할 수 없습니다.");
+			return;
+		}
+		
+		// 관리자 모드 진입 -> 도서 추가, 도서 삭제, 도서 정보 파일 저장
+			// 관리자 모드일 때의 메뉴 출력
+			// 메뉴 선택하면 해당 기능 실행
+		int menu;
+		do {
+			menu = view.selectMenu(adminMenuList);
+			
+			switch (menu) {
+			case 1 -> addBook2Storage();
+			case 2 -> deleteBookInStorage();
+			case 3 -> viewBookInfo();
+			case 4 -> saveBookList2File();
+			case 0 -> adminEnd();
+			default -> view.showMessage("잘못된 메뉴 번호입니다.");
+			}
+		} while (menu != 0);
+	}
+
+	private void deleteBookInStorage() {
+		if (mBookStorage.isEmpty()) {
+			view.showMessage("책 창고에 책이 없습니다.");
+			return;
+		}
+		// 책 창고 보여주기
+		viewBookInfo();
+		// 도서 ID 입력 받기
+		int bookId = view.selectBookId(mBookStorage);
+		if (view.askConfirm(">> 해당 도서를 삭제하려면 yes를 입력하세요 : ", "yes")) {
+			// 해당 도서 ID의 cartItem 삭제
+			mBookStorage.deleteItem(bookId);
+			view.showMessage(">> 해당 도서를 삭제했습니다.");
+		}
+
+	}
+
+	private void adminEnd() {
+		view.showMessage("관리자 모드가 종료되었습니다.\n");
+	}
+
+	private void saveBookList2File() {
+		if (mBookStorage.isSaved()) {
+			view.showMessage("책 정보가 파일과 동일합니다.");
+		} else {
+			mBookStorage.saveBookList2File();
+			view.showMessage("책 정보를 저장하였습니다.");
+		}
+	}
+
+	private void addBook2Storage() {
+		view.showMessage("새로운 책을 추가합니다.");
+		
+		// 책정보로 Book 인스턴스 만들어서 mBookStorage에 추가
+		mBookStorage.addBook(view.inputString("책 제목 : "),
+				view.inputString("저자 : "), view.inputString("출판사 : "),
+				view.readNumber("가격 : "));
+
+	}
+
+	private boolean authenticateAdmin() {
+		// 관리자 인증 (id, password 확인)
+		view.showMessage("관리자 모드 진입을 위한 관리장 인증");
+		String id = view.inputString("관리자 ID : ");
+		String password = view.inputString("관리자 password : ");
+		return mAdmin.login(id, password);
 	}
 
 	// 환영 인사
@@ -77,7 +163,7 @@ public class BookMarketController {
 	private void addBook2Cart() {
 		view.displayBookInfo(mBookStorage);
 		int bookId = view.selectBookId(mBookStorage);
-		mCart.addItem(mBookStorage.getBookId(bookId));
+		mCart.addItem(mBookStorage.getBookById(bookId));
 		view.showMessage(">>장바구니에 도서를 추가하였습니다.");	
 	}
 	

@@ -3,6 +3,7 @@ package bookmarket.model;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -10,18 +11,30 @@ public class BookStorage {
 	ArrayList<Book> bookList = new ArrayList<>();
 	final int MAX_QUANTITY = 10;
 	private String bookFilename = "booklist.txt";
+	private int lastId;
+	private boolean isSaved;
 	
 	public BookStorage() throws IOException {
-		loadBookListFromFile();		
+		loadBookListFromFile();
+		generateLastId();
+		isSaved = true;
 	}
 	
+	private void generateLastId() {
+		lastId = 0;
+		for (Book book : bookList) {
+			int id = book.getBookId();
+			if (id > lastId) lastId = id;
+		}
+	}
+
 	private void loadBookListFromFile() throws IOException {
 		FileReader fr;
 		try {
 			fr = new FileReader(bookFilename);
 			BufferedReader br = new BufferedReader(fr);
 			String idStr;
-			while ((idStr = br.readLine()) != null) {
+			while ((idStr = br.readLine()) != null && !idStr.equals("")) {
 				int id = Integer.parseInt(idStr);
 				String title = br.readLine();
 				String author = br.readLine();
@@ -29,6 +42,8 @@ public class BookStorage {
 				int price = Integer.parseInt(br.readLine());
 				bookList.add(new Book(id, title, author, publisher, price));
 			}
+			fr.close();
+			br.close();
 		} catch (FileNotFoundException |  NumberFormatException e) {
 			System.out.println(e.getMessage());
 		}
@@ -49,7 +64,7 @@ public class BookStorage {
 		return false;
 	}
 
-	public Book getBookId(int bookId) {
+	public Book getBookById(int bookId) {
 		for (Book book : bookList) {
 			if (book.getBookId() == bookId)
 				return book;
@@ -59,6 +74,44 @@ public class BookStorage {
 
 	public int getMaxQuantity() {
 		return MAX_QUANTITY;
+	}
+
+	public boolean isEmpty() {
+		return bookList.size() == 0;
+	}
+
+	public void deleteItem(int bookId) {
+		bookList.remove(getBookById(bookId));
+		isSaved = false;
+	}
+
+	public void addBook(String title, String author, String publisher, int price) {
+		
+		Book book = new Book(++lastId, title, author, publisher, price);
+		bookList.add(book);
+		isSaved = false;
+	}
+
+	public boolean isSaved() {
+		return isSaved;
+	}
+
+	public void saveBookList2File() {
+
+		try {
+			FileWriter fw = new FileWriter(bookFilename);
+			for (Book book : bookList) {
+				fw.write(book.getBookId() + "\n");
+				fw.write(book.getTitle() + "\n");
+				fw.write(book.getAuthor() + "\n");
+				fw.write(book.getPublisher() + "\n");
+				fw.write(book.getPrice() + "\n");
+			}
+			fw.close();
+			isSaved = true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
