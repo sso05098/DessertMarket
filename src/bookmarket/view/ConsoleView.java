@@ -23,8 +23,7 @@ public class ConsoleView {
 		
 		int menu;
 		do {
-			System.out.print(">> 메뉴 선택 : ");
-			menu = readNumber();	
+			menu = readNumber(">> 메뉴 선택 : ");	
 			if (menu < 0 || menu >= menuList.length)
 				System.out.println("0부터 " + (menuList.length-1) + "까지의 숫자를 입력하세요.");
 		} while (menu < 0 || menu >= menuList.length);
@@ -68,8 +67,7 @@ public class ConsoleView {
 		int bookId;
 		boolean result;
 		do {
-			System.out.print("추가할 도서의 ID를 입력하세요 : ");
-			bookId = readNumber();
+			bookId = readNumber("추가할 도서의 ID를 입력하세요 : ");
 			result = bookStorage.isValidBook(bookId);
 			if (!result)
 				System.out.print("잘못된 도서의 ID입니다.");
@@ -84,8 +82,7 @@ public class ConsoleView {
 		int bookId;
 		boolean result;
 		do {
-			System.out.print("도서 ID 입력 : ");
-			bookId = readNumber();
+			bookId = readNumber("도서 ID 입력 : ");
 			result = cart.isValidItem(bookId);
 			if (!result)
 				System.out.print("잘못된 도서의 ID입니다.");
@@ -98,8 +95,7 @@ public class ConsoleView {
 	public int inputQuantity(int min, int max) {
 		int number;
 		do {
-			System.out.print(">> 수량 입력 (" + min + " ~ " + max + "): ");
-			number = readNumber();
+			number = readNumber(">> 수량 입력 (" + min + " ~ " + max + "): ");
 			if (number < min || number > max)
 				System.out.println("잘못된 수량입니다.");
 		} while (number < min || number > max);
@@ -160,14 +156,17 @@ public class ConsoleView {
 	}
 	
 	// 숫자 입력 받기 (숫자가 아닌 문자를 넣으면 예외 처리하고 다시 입력받기)
-	private int readNumber() {
+	public int readNumber(String message) {
+		if (message != null || !message.equals(""))
+			System.out.print(message);
+		
 		Scanner input = new Scanner(System.in);
 		try {
 			int number = input.nextInt();
 			return number;
 		} catch (Exception e) {
 			System.out.print("숫자를 입력하세요 :");
-			return readNumber();
+			return readNumber(message);
 		}
 	}
 	
