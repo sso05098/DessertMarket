@@ -27,11 +27,18 @@ public class BookMarketController {
 	};
 	
 	String[] adminMenuList = {
+<<<<<<< HEAD
 			"0. 종료",
 			"1. 도서 정보 추가",
 			"2. 도서 정보 삭제",
 			"3. 도서 정보 보기",
 			"4. 도서 정보 파일 저장"
+=======
+			"0. 관리자 모드 종료",
+			"1. 도서 추가 하기",
+			"2. 도서 삭제 하기",
+			"3. 도서 정보 저장하기"
+>>>>>>> refs/remotes/origin/master
 	};
 	
 	public BookMarketController(BookStorage bookStorage, Cart cart, ConsoleView view) {
@@ -58,13 +65,18 @@ public class BookMarketController {
 			case 5 -> updateBookInCart();
 			case 6 -> resetCart();
 			case 7 -> order();
+<<<<<<< HEAD
 			case 8 -> amdinMode();
+=======
+			case 8 -> adminMode();
+>>>>>>> refs/remotes/origin/master
 			case 0 -> end();
 			default -> view.showMessage("잘못된 메뉴 번호입니다.");
 			}
 		} while (menu != 0);	
 	}
 
+<<<<<<< HEAD
 	private void amdinMode() {
 		
 		if (!authenticateAdmin()) {
@@ -136,6 +148,53 @@ public class BookMarketController {
 		String id = view.inputString("관리자 ID : ");
 		String password = view.inputString("관리자 password : ");
 		return mAdmin.login(id, password);
+=======
+	private void adminMode() {
+
+		if (!authenticateAdmin()) return;
+		view.showMessage("\n>> 관리자 모드를 시작합니다.");
+		
+		
+		int menu = view.selectMenu(adminMenuList);
+			
+		do {
+			switch (menu) {
+			case 1 -> addBook2Storage();
+			case 2 -> deleteBookInStorage();
+			case 3 -> saveBookList2File();
+			case 0 -> endAdminMode();
+			default -> view.showMessage("잘못된 메뉴 번호입니다.");
+			}
+		} while (menu != 0);
+
+}
+
+	private void endAdminMode() {
+		view.showMessage(">> 관리자 모드를 종료합니다.\n");
+	}
+
+	private void saveBookList2File() {
+
+	}
+
+	private void deleteBookInStorage() {
+		
+	}
+
+	private void addBook2Storage() {
+
+	}
+
+	private boolean authenticateAdmin() {
+		view.showMessage("관리자 모드 진입을 위한 관리자 id와 password 확인");
+		String id = view.inputString("관리자 ID : ");
+		String password = view.inputString("관리자 Password : ");
+		if (!mAdmin.login(id, password)) {
+			view.showMessage("관리자 ID 또는 Password가 잘못 입력되었습니다.");
+			return false;
+		}
+		return true;
+>>>>>>> refs/remotes/origin/master
 	}
 
 	// 환영 인사
