@@ -23,7 +23,8 @@ public class ConsoleView {
 		
 		int menu;
 		do {
-			menu = readNumber(">> 메뉴 선택 : ");	
+			System.out.print(">> 메뉴 선택 : ");
+			menu = readNumber();	
 			if (menu < 0 || menu >= menuList.length)
 				System.out.println("0부터 " + (menuList.length-1) + "까지의 숫자를 입력하세요.");
 		} while (menu < 0 || menu >= menuList.length);
@@ -67,7 +68,8 @@ public class ConsoleView {
 		int bookId;
 		boolean result;
 		do {
-			bookId = readNumber("도서의 ID를 입력하세요 : ");
+			System.out.print("추가할 도서의 ID를 입력하세요 : ");
+			bookId = readNumber();
 			result = bookStorage.isValidBook(bookId);
 			if (!result)
 				System.out.print("잘못된 도서의 ID입니다.");
@@ -82,7 +84,8 @@ public class ConsoleView {
 		int bookId;
 		boolean result;
 		do {
-			bookId = readNumber("도서 ID 입력 : ");
+			System.out.print("도서 ID 입력 : ");
+			bookId = readNumber();
 			result = cart.isValidItem(bookId);
 			if (!result)
 				System.out.print("잘못된 도서의 ID입니다.");
@@ -95,7 +98,8 @@ public class ConsoleView {
 	public int inputQuantity(int min, int max) {
 		int number;
 		do {
-			number = readNumber(">> 수량 입력 (" + min + " ~ " + max + "): ");
+			System.out.print(">> 수량 입력 (" + min + " ~ " + max + "): ");
+			number = readNumber();
 			if (number < min || number > max)
 				System.out.println("잘못된 수량입니다.");
 		} while (number < min || number > max);
@@ -156,17 +160,14 @@ public class ConsoleView {
 	}
 	
 	// 숫자 입력 받기 (숫자가 아닌 문자를 넣으면 예외 처리하고 다시 입력받기)
-	public int readNumber(String message) {
-		if (message != null) {
-			System.out.print(message);
-		}
+	private int readNumber() {
 		Scanner input = new Scanner(System.in);
 		try {
 			int number = input.nextInt();
 			return number;
 		} catch (Exception e) {
 			System.out.print("숫자를 입력하세요 :");
-			return readNumber(message);
+			return readNumber();
 		}
 	}
 	
@@ -175,11 +176,12 @@ public class ConsoleView {
 		System.out.println(message);
 		
 	}
-
-	public String inputString(String message) {
-		Scanner input = new Scanner(System.in);
-		System.out.print(message);
-		return input.nextLine();
+	
+	// 문자열 입력 받기
+	public String inputString(String msg) {
+		Scanner in = new Scanner(System.in);
+		System.out.print(msg);
+		return in.nextLine();
 	}
 
 }
