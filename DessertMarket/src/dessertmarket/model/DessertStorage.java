@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class DessertStorage {
 	ArrayList<Dessert> dessertList = new ArrayList<>();
 	final int MAX_QUANTITY = 10;
-	private String dessertFilename = "dessertlist.txt";
+	private String dessertFilename = "C:\\Users\\kbj\\eclipse-workspace\\DessertMarket\\DessertMarket\\dessertlist.txt";
 	private int lastId;
 	private boolean isSaved;
 	
@@ -38,7 +38,7 @@ public class DessertStorage {
 				int id = Integer.parseInt(idStr);
 				String title = br.readLine();
 				String author = br.readLine();
-				String publisher = br.readLine();
+//				String publisher = br.readLine();
 				int price = Integer.parseInt(br.readLine());
 				dessertList.add(new Dessert(id, title, author, /* publisher, */price));
 			}
@@ -86,9 +86,9 @@ public class DessertStorage {
 		isSaved = false;
 	}
 
-	public void addBook(String title, String author, String publisher, int price) {
+	public void addDessert(String title, String author, /*String publisher*/ int price) {
 		
-		Dessert dessert = new Dessert(++lastId, title, author, publisher, price);
+		Dessert dessert = new Dessert(++lastId, title, author, /* publisher, */price);
 		dessertList.add(dessert);
 		isSaved = false;
 	}
@@ -105,7 +105,7 @@ public class DessertStorage {
 				fw.write(dessert.getDessertId() + "\n");
 				fw.write(dessert.getTitle() + "\n");
 				fw.write(dessert.getAuthor() + "\n");
-				fw.write(dessert.getPublisher() + "\n");
+				//fw.write(dessert.getPublisher() + "\n");
 				fw.write(dessert.getPrice() + "\n");
 			}
 			fw.close();

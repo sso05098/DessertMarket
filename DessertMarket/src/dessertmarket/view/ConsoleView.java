@@ -2,7 +2,6 @@ package dessertmarket.view;
 
 import java.util.Scanner;
 
-import dessertmarket.model.BookStorage;
 import dessertmarket.model.Cart;
 import dessertmarket.model.Customer;
 import dessertmarket.model.DessertStorage;
